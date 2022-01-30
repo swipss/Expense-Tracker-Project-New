@@ -13,18 +13,17 @@ import Profile from "../screens/Profile";
 
 const Tab = createBottomTabNavigator();
 
-const CustomTabBarButton = () => {
-    const [modalVisible, setModalVisible] = useState(false);
+const CustomTabBarButton = ({navigation}) => {
 
     return (
         <View>
-            <View>
+            {/* <View>
                 <Modal
                 animationType="slide"
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(!modalVisible)}
                 >
-                    <AddTransaction modalVisible={modalVisible} setModalVisible={setModalVisible} />
+                    <AddTransaction modalVisible={modalVisible} setModalVisible={setModalVisible} /> */}
                     {/* <Pressable
                     style={{
                         position: 'absolute',
@@ -35,12 +34,12 @@ const CustomTabBarButton = () => {
                          <Text>Close</Text>
                     </Pressable> */}
 
-                </Modal>
-            </View>
+                {/* </Modal>
+            </View> */}
             
             <Pressable
             style={[styles.buttonOpen, styles.button, {marginTop: -35}]}
-            onPress={() => setModalVisible(true)}
+            onPress={() => navigation.navigate('Add Transaction')}
             >
                 <Entypo name="plus" size={28} color={'white'} />
             </Pressable>
@@ -50,7 +49,7 @@ const CustomTabBarButton = () => {
 
 }
 
-export default function Tabs() {
+export default function Tabs({navigation}) {
   return (
     <Tab.Navigator screenOptions={{
         headerShown: false,
@@ -94,7 +93,7 @@ export default function Tabs() {
             ),
         }} />
         <Tab.Screen name='Add Transaction' component={AddTransaction} options={{
-            tabBarButton: () => (<CustomTabBarButton />)
+            tabBarButton: () => (<CustomTabBarButton navigation={navigation} />)
         }} />
         <Tab.Screen name="Market" component={Market} options={{
             tabBarIcon: ({focused}) => (
@@ -162,7 +161,7 @@ const styles = StyleSheet.create({
       
     },
     buttonOpen: {
-      backgroundColor: "#F1CB0C",
+      backgroundColor: "#FAAD3D",
       
     },
     buttonClose: {

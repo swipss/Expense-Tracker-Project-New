@@ -18,7 +18,8 @@ export default function ExpenseItem(props) {
         )
     }, [])
 
-    const dispatch = useDispatch();
+
+    
 
     return (
         <View style={[styles.contentWrapper, styles.shadowProp]}>
@@ -26,7 +27,7 @@ export default function ExpenseItem(props) {
                 <AntDesign name="close" size={18}
                 fillColor='lightgrey'
                 onPress={() => {
-                    dispatch(deleteTransaction(props.id));
+                    
                 }}
                 style={{marginRight: 5, opacity: 0.4}}
                 />

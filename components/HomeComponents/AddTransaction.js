@@ -4,14 +4,16 @@ import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import {addTransaction} from '../../redux/store/actions/transactionAction';
 import { Picker } from '@react-native-picker/picker'
+import { arrayUnion, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase';
 
 export default function AddTransaction({navigation, modalVisible, setModalVisible}) {
+    // console.log(selectedValue, category);
+    
+    
+    const dispatch = useDispatch();
     const [selectedValue, setSelectedValue] = useState("expense");
     const [category, setCategory] = useState('Entertainment');
-    // console.log(selectedValue, category);
-
-
-    const dispatch = useDispatch();
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
 
@@ -22,17 +24,26 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
 
         const id = Math.floor(Math.random() * 600000);
 
-        const newTransaction = {
-            id,
-            title,
-            category,
-            price: +price,
-            type: selectedValue,
-        }
+        updateDoc(doc(db, 'users', auth.currentUser.uid), {
+            transactions: arrayUnion({
+                category: category,
+                id: id,
+                price: +price,
+                title: title,
+                type: selectedValue,
+            })
+        })
+        // const newTransaction = {
+        //     id,
+        //     title,
+        //     category,
+        //     price: +price,
+        //     type: selectedValue,
+        // }
 
-        dispatch(addTransaction({...newTransaction}));
+        // dispatch(addTransaction({...newTransaction}));
 
-        setModalVisible(!modalVisible);
+        navigation.navigate('Home Screen')        
         
 
         
@@ -109,7 +120,7 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
                         alignItems: 'center',
                         marginTop: 10,
                     }}
-                    onPress={() => setModalVisible(!modalVisible)}
+                    onPress={() => navigation.replace('Home Screen')}
                     >
                         <Text style={{
                             color: '#fff',
@@ -129,7 +140,7 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 20,
-        marginTop: 10,
+        marginTop: 40,
     },
     formsContainer: {
 

@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [name, setName] = useState('')
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -25,11 +25,7 @@ export default function LoginScreen({ navigation }) {
             const user = userCredential.user;
             console.log('Registered in with', user.email)
             setDoc(doc(db, "users", user.uid), {
-                name: name,
-                transactions: [
-                    {id: 1, title: 'Soup', price: -20, category: 'Grocery', type: 'expense'},
-                    {id: 2, title: 'Aids', price: -30, category: 'Health', type: 'expense'},
-                ]
+                transactions: []
               });
         })
         .catch((error) => {
@@ -51,6 +47,10 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
+        <View style={styles.titleContainer}>
+            <Text style={{fontSize: 36, fontWeight: '700', marginBottom: 5}}>Login</Text>
+            <Text style={{fontSize: 16, color: '#999'}}>Please sign in to continue</Text>
+        </View>
         <View style={styles.inputContainer}>
             <TextInput 
             placeholder='Email'
@@ -65,27 +65,36 @@ export default function LoginScreen({ navigation }) {
             secureTextEntry
             style={styles.input}
             />
-            <TextInput 
+            {/* <TextInput 
             placeholder='Name'
             value={name}
             onChangeText={(text) => setName(text)}
             style={styles.input}
-            />
+            /> */}
         </View>
         <View style={styles.buttonContainer}>
             <TouchableOpacity
             onPress={() => handleLogin()}
             style={styles.button}
             >
-                <Text style={styles.buttonText}>Login</Text>
+                <Text style={styles.buttonText}>LOGIN</Text>
+                <AntDesign name='arrowright' size={24} color={'white'}  style={{marginLeft: 5}}/>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
             onPress={() => handleSignUp()}
             style={[styles.button, styles.buttonOutline]}
             >
                 <Text style={styles.buttonOutlineText}>Register</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             
+        </View>
+        <View style={styles.registerContainer}>
+            <Text style={styles.signupText}>Don't have an account?</Text>
+            <TouchableOpacity
+            onPress={() => navigation.navigate('Register')}
+            >
+                <Text style={[styles.signupText, styles.highlight]}>Sign up</Text>
+            </TouchableOpacity>
         </View>
     </KeyboardAvoidingView>
   );
@@ -97,9 +106,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    titleContainer: {
+        width: '80%',
+        marginBottom: 40,
+    },
     inputContainer: {
         width: '80%'
     },
+    
     input: {
         backgroundColor: 'white',
         paddingHorizontal: 15,
@@ -108,17 +122,19 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     buttonContainer: {
-        width: '60%',
+        width: '35%',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 40,
     },
     button: {
+        flexDirection: 'row',
         backgroundColor: '#FAAD3D',
         width: '100%',
         padding: 15,
-        borderRadius: 10,
-        alignItems: 'center'
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     buttonText: {
         color: 'white',
@@ -136,4 +152,16 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 16,
     },
+    registerContainer: {
+        position: 'absolute',
+        bottom: 40,
+        flexDirection: 'row'
+    },
+    signupText: {
+        fontSize: 14,
+    },
+    highlight: {
+        marginLeft: 5,
+        color: '#FAAD3D'
+    },   
 })

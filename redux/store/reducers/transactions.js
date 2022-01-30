@@ -2,9 +2,7 @@ import { ADD_TRANSACTIONS } from "../actions/types";
 import { DELETE_TRANSACTIONS } from "../actions/types";
 
 const initialState = {
-    transactions: [
-        {id: 1, title: 'Soup', price: -20, category: 'Grocery', type: 'expense'},
-        
+    transactions: [        
     ]
 };
 

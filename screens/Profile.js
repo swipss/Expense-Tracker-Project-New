@@ -1,10 +1,23 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
-import { auth } from '../firebase';
+import React, {useState, useEffect} from 'react';
+import { getDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 import { signOut } from 'firebase/auth';
 
 export default function Profile({ navigation }) {
   
+  const [data, setData] = useState([])
+
+   useEffect(() => {
+    getDoc(doc(db, "users", auth.currentUser.uid)).then(docSnap => {
+        if (docSnap.exists()) {
+          setData(docSnap.data())
+        } else {
+          console.log("No such document!");
+        }
+      })
+   }, [])
+
   const handleSignOut = () => {
     signOut(auth)
     .then(() => {
@@ -26,15 +39,15 @@ export default function Profile({ navigation }) {
         borderBottomWidth: .5,
         marginTop: 20,
       }}>
-        <Image source={require('../assets/icons/boss.png')} style={{width:100, height: 100, borderRadius: 50, borderWidth: 3, borderColor: '#F1CB0C',}} />
+        <Image source={require('../assets/icons/boss.png')} style={{width:100, height: 100, borderRadius: 50, borderWidth: 3, borderColor: '#FAAD3D',}} />
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.titleContainer}>FIRST NAME</Text>
-        <Text style={styles.infoText}>Sten</Text>
+        <Text style={styles.infoText}>{data.firstName}</Text>
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.titleContainer}>LAST NAME</Text>
-        <Text style={styles.infoText}>Vassiljev</Text>
+        <Text style={styles.infoText}>{data.lastName}</Text>
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.titleContainer}>EMAIL</Text>
@@ -67,7 +80,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#F1CB0C',
+    backgroundColor: '#FAAD3D',
     marginHorizontal: 20,
     marginTop: 20,
     justifyContent: 'center',

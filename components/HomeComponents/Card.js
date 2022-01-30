@@ -1,16 +1,37 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient'
 import { useSelector } from 'react-redux'
+import { getDoc, doc } from 'firebase/firestore'
+import { auth, db } from '../../firebase'
+import { useIsFocused } from '@react-navigation/native'
 
 export default function Card({navigation}) {
 
-    const {transactions} = useSelector((state) => state.transactions);
+    // const {transactions} = useSelector((state) => state.transactions);
+    const isFocused = useIsFocused()
+    const [data, setData] = useState([])
 
-    const prices = transactions.map(transaction => transaction.price);
+    useEffect(() => {
+        if (isFocused) {
+
+            getDoc(doc(db, "users", auth.currentUser.uid)).then(docSnap => {
+            if (docSnap.exists()) {
+              setData(docSnap.data().transactions)
+            } else {
+              console.log("No such document!");
+            }
+          })
+        }
+   }, [isFocused])
+//    console.log('🤞', data)
+   
+
+    const prices = data.map(transaction => transaction.price);
+    // console.log(prices)
     const totalPrice = prices.reduce((prev, curr) => (prev += curr), 0).toFixed(2)
 
-    const expense = prices.filter(price => price < 0).reduce((prev, curr) => (prev += curr), 0).toFixed(2) * -1;
+    // const expense = prices.filter(price => price < 0).reduce((prev, curr) => (prev += curr), 0).toFixed(2) * -1;
 
     return (
         <LinearGradient colors={['#FAAD3D', '#EFC90A', '#F1CB0C']} style={[styles.box, styles.shadow]}>
