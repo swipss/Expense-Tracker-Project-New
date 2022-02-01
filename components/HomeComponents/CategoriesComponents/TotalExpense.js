@@ -1,10 +1,26 @@
 import { View, Text } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../../../firebase';
 
 export default function TotalExpense() {
     
-    const {transactions} = useSelector((state) => state.transactions);
+    const [transactions, setTransactions] = useState([])
+  const isFocused = useIsFocused();
+   useEffect(() => {
+       if (isFocused) {
+
+           getDoc(doc(db, "users", auth.currentUser.uid)).then(docSnap => {
+               if (docSnap.exists()) {
+               setTransactions(docSnap.data().transactions)
+               } else {
+               console.log("No such document!");
+               }
+         })
+       }
+   }, [isFocused])
 
     const prices = transactions.map(transaction => transaction.price)
 

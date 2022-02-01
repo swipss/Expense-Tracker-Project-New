@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity, ScrollView } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import ExpenseItem from '../components/HomeComponents/ExpenseItem';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,7 +15,6 @@ export default function Home({ navigation }) {
 
     const [transactions, setTransactions] = useState([])
     const [name, setName] = useState('')
-    const [lastname, setLastName] = useState('')
     const isFocused = useIsFocused();
    useEffect(() => {
        if (isFocused) {
@@ -24,7 +23,6 @@ export default function Home({ navigation }) {
                if (docSnap.exists()) {
                setTransactions(docSnap.data().transactions)
                setName(docSnap.data().firstName)
-               setLast(docSnap.data().lastName)
                } else {
                console.log("No such document!");
                }
@@ -49,7 +47,7 @@ export default function Home({ navigation }) {
             </View>
             <Card navigation={navigation} data={transactions} />
             
-            <View style={{flex: 1, justifyContent: 'center'}}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {
                     transactions.length > 0 ? (
                         <FlatList data={transactions}
@@ -57,12 +55,14 @@ export default function Home({ navigation }) {
                             <ExpenseItem title={item.title} price={item.price} id={item.id} category={item.category}/>
                         )}
                         keyExtractor={(item) => item.id.toString()}
+                        showsVerticalScrollIndicator={false}
+                        inverted
                         />
 
                     ) : <NoTransactions />
                 }
                 {/* <AddTransactionButton navigation={navigation}/> */}
-            </View>
+            </ScrollView>
             <View style={{height: 90}}/>
             {/* <AddTransactionModal /> */}
             {/* <BottomTabs navigation={navigation}/> */}

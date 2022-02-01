@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "ExpenseTracker",
-    "slug": "ExpenseTracker",
+    "name": "Expense Tracker",
+    "slug": "expense-tracker",
+    "description": "An app for tracking your expenses",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

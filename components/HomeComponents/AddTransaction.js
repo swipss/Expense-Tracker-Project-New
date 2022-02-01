@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Touchable } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Touchable, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import {addTransaction} from '../../redux/store/actions/transactionAction';
 import { Picker } from '@react-native-picker/picker'
 import { arrayUnion, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 export default function AddTransaction({navigation, modalVisible, setModalVisible}) {
     // console.log(selectedValue, category);
@@ -51,12 +52,31 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
 
     return (
         <View style={styles.container}>
+            <AntDesign name="left" size={25} onPress={() => navigation.goBack()}/>
             <Formik
             initialValues={{title: '', price: ''}}
             >
-                <View style={styles.formsContainer}>
+                <KeyboardAvoidingView behavior='padding' style={styles.formsContainer}>
                     <View style={styles.type}>
                         
+                    </View>
+                    <View style={styles.formWrapper}>
+                        <TextInput
+                        style={styles.text}
+                        placeholder='Title'
+                        onChangeText={(title) => setTitle(title)}
+                        
+                        />
+                    </View>
+                    
+                    <View style={styles.formWrapper}>
+                        <TextInput 
+                        style={styles.text}
+                        placeholder='Amount'
+                        onChangeText={(price) => selectedValue == 'expense' ? setPrice(price * -1) : setPrice(price)}
+                        keyboardType='numeric'
+                        
+                        />
                     </View>
                     <Picker
                         mode='dropdown'
@@ -78,26 +98,8 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
                             <Picker.Item label='Health' value='Health' />
                             <Picker.Item label='Checks' value='Checks' />
                     </Picker>
-                    <View style={styles.formWrapper}>
-                        <TextInput
-                        style={styles.text}
-                        placeholder='Title'
-                        onChangeText={(title) => setTitle(title)}
-                        
-                        />
-                    </View>
-                    
-                    <View style={styles.formWrapper}>
-                        <TextInput 
-                        style={styles.text}
-                        placeholder='Amount'
-                        onChangeText={(price) => selectedValue == 'expense' ? setPrice(price * -1) : setPrice(price)}
-                        keyboardType='numeric'
-                        
-                        />
-                    </View>
                     <TouchableOpacity style={{
-                        backgroundColor: '#F1CB0C',
+                        backgroundColor: '#FAAD3D',
                         padding: 10,
                         paddingVertical: 15,
                         borderRadius: 10,
@@ -112,7 +114,7 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
                             fontSize: 15,
                         }}>ADD TRANSACTION</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{
+                    {/* <TouchableOpacity style={{
                         backgroundColor: '#ccc',
                         padding: 10,
                         paddingVertical: 15,
@@ -127,9 +129,9 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
                             fontWeight: '700',
                             fontSize: 15,
                         }}>DISMISS</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     
-                </View>
+                </KeyboardAvoidingView>
                 
             </Formik>
 
@@ -140,10 +142,10 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 20,
-        marginTop: 40,
+        marginTop: 60,
     },
     formsContainer: {
-
+        marginTop: 10,
     },
     formWrapper: {
         padding: 15,
