@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
+import {LinearGradient} from 'expo-linear-gradient'
+
 
 export default function Coins({ name, image, symbol, price, volume, priceChange }) {
     return (
-        <View style={styles.container}>
+        <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={priceChange < 0 ? ['#fff', '#ffbdbd'] : ['#fff', '#bfffbd']} style={styles.container}>
             <View style={styles.leftContentWrapper}>
                 <View style={styles.shadow}>
                     <Image source={{ uri: image}} style={[styles.image, styles.shadow]}/>
@@ -24,7 +26,7 @@ export default function Coins({ name, image, symbol, price, volume, priceChange 
 
                 )}
             </View>
-        </View>
+        </LinearGradient>
     )
 }
 
@@ -37,6 +39,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 5,
         paddingVertical: 10,
+        borderRadius: 10, 
+        marginBottom: 5,
     },
     leftContentWrapper: {
         flexDirection: 'row',

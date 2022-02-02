@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 16,
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
 });
 

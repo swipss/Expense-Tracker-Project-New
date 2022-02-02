@@ -25,45 +25,45 @@ export default function Home({ navigation }) {
                setName(docSnap.data().firstName)
                } else {
                console.log("No such document!");
+               console.log("No such data found in the data base")
                }
          })
        }
    }, [isFocused])
 
-    // console.log(transactions, '❤')
+    // console.log(transactions)
     
       
 
     return (
         <View style={{
             flex: 1,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            marginTop: 40,
+            backgroundColor: '#FAAD3D'
             }}>
-            <View style={{marginVertical: 10,}}>
+            {/* <View style={{marginTop: 40,}}>
                 <Text style={{fontSize: 35, fontWeight: '300'}}>Hello,</Text>
                 <Text style={{fontSize: 35, fontWeight: '600',}}>{name}</Text>
-            </View>
-            <Card navigation={navigation} data={transactions} />
+            </View> */}
+            <Card navigation={navigation} data={transactions} name={name} />
             
-            <ScrollView showsVerticalScrollIndicator={false}>
+            
+            <ScrollView showsHorizontalScrollIndicator={false} style={{backgroundColor: '#fff', borderTopLeftRadius: 50, borderTopRightRadius: 50, flex: 1}}>
                 {
                     transactions.length > 0 ? (
                         <FlatList data={transactions}
                         renderItem={({item}) => (
-                            <ExpenseItem title={item.title} price={item.price} id={item.id} category={item.category}/>
-                        )}
-                        keyExtractor={(item) => item.id.toString()}
-                        showsVerticalScrollIndicator={false}
-                        inverted
-                        />
-
-                    ) : <NoTransactions />
-                }
+                            <ExpenseItem title={item.title} price={item.price} id={item.id} category={item.category} currentDate={item.date}/>
+                            )}
+                            keyExtractor={(item) => item.id.toString()}
+                            showsVerticalScrollIndicator={false}
+                            inverted
+                            />
+                            
+                            ) : <NoTransactions />
+                        }
                 {/* <AddTransactionButton navigation={navigation}/> */}
             </ScrollView>
-            <View style={{height: 90}}/>
+            <View style={{height: 100, backgroundColor: '#fff'}}/>
             {/* <AddTransactionModal /> */}
             {/* <BottomTabs navigation={navigation}/> */}
         </View>
@@ -79,4 +79,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 22,
     },
+    
 })

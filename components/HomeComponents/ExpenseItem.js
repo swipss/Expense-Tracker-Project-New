@@ -1,22 +1,19 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { borderLeftColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
-import { deleteTransaction } from '../../redux/store/actions/transactionAction';
-import { useDispatch } from 'react-redux';
+
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function ExpenseItem(props) {
-    const [currentDate, setCurrentDate] = useState('')
+    // const [currentDate, setCurrentDate] = useState('')
 
-    useEffect(() => {
-        var date = new Date().getDate() // current date
-        var month = new Date().getMonth() + 1 // current month
-        var year = new Date().getFullYear() // current year
-        setCurrentDate(
-            date + '.' + month + '.' + year
-        )
-    }, [])
+    // useEffect(() => {
+    //     var date = new Date().getDate() // current date
+    //     var month = new Date().getMonth() + 1 // current month
+    //     var year = new Date().getFullYear() // current year
+    //     setCurrentDate(
+    //         date + '.' + month + '.' + year
+    //     )
+    // }, [])
 
 
     
@@ -45,7 +42,7 @@ export default function ExpenseItem(props) {
                         fontSize: 13,
                         fontWeight: '600',
                         opacity: .5,
-                    }}>{currentDate}</Text>
+                    }}>{props.currentDate}</Text>
                 </View>
             </View>
             <View style={styles.rightWrapper}>

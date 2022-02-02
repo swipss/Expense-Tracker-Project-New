@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient'
-import { useSelector } from 'react-redux'
 import { getDoc, doc } from 'firebase/firestore'
 import { auth, db } from '../../firebase'
 import { useIsFocused } from '@react-navigation/native'
 
-export default function Card({navigation}) {
+export default function Card({navigation, ...props}) {
 
     // const {transactions} = useSelector((state) => state.transactions);
     const isFocused = useIsFocused()
@@ -34,34 +33,38 @@ export default function Card({navigation}) {
     // const expense = prices.filter(price => price < 0).reduce((prev, curr) => (prev += curr), 0).toFixed(2) * -1;
 
     return (
-        <LinearGradient colors={['#FAAD3D', '#EFC90A', '#F1CB0C']} style={[styles.box, styles.shadow]}>
+        <LinearGradient colors={['#fad73d', '#facb3d', '#FAAD3D']} style={styles.box}>
                 <View style={{
-                    width: '70%',
-                    alignItems: 'flex-start',
+                    alignItems: 'center',
+                    marginTop: 16,
                 }}>
                     <Text style={{
-                        fontSize: 16,
+                        fontSize: 18,
                         color: '#fff',
-                        fontWeight: '600'
-                    }}>Current Balance</Text>
+                        fontWeight: 'bold',
+                    }}>Hello, {props.name}</Text>
+                    
                     <Text style={{
-                        fontSize: 32,
+                        fontSize: 38,
                         color: '#fff',
-                        fontWeight: '700',
+                        fontWeight: 'bold',
+                        marginTop: 20,
                     }}>{totalPrice < 0 ? `-$${Math.abs(totalPrice)}` : `$${totalPrice}`}</Text>
-                    <Text style={{
+                    {/* <Text style={{
                         marginTop: 67,
                         color: '#fff',
                         fontSize: 18,
                         fontWeight: '700'
-                    }}> 5167 **** **** 2014</Text>
+                    }}> 5167 **** **** 2014</Text> */}
                 </View>
                 <View style={{flex: 1, alignItems: 'flex-end',}}>
-                    <Text style={{
-                        fontSize: 18,
+                <Text style={{
+                        fontSize: 17,
                         color: '#fff',
-                        fontWeight: '600',
-                    }}>USD</Text>
+                        fontWeight: 'bold',
+                        marginTop: 7,
+                    }}>Current Balance</Text>
+                    
                     {/* <TouchableOpacity onPress={() => navigation.navigate("AddTransaction")} style={{
                         padding: 10,
                         marginTop: 32,
@@ -100,12 +103,10 @@ export default function Card({navigation}) {
 
 const styles = StyleSheet.create({
     box: {
-        width: '100%',
         height: 190,
-        borderRadius: 15,
-        flexDirection: 'row',
         padding: 22,
         marginBottom: 10,
+        alignItems: 'center',
     },
     shadow: {
         shadowColor: '#000',
