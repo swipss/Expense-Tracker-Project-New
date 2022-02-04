@@ -25,12 +25,10 @@ export default function Home({ navigation }) {
                setName(docSnap.data().firstName)
                } else {
                console.log("No such document!");
-               console.log("No such data found in the data base")
                }
          })
        }
    }, [isFocused])
-
     // console.log(transactions)
     
       
@@ -52,7 +50,7 @@ export default function Home({ navigation }) {
                     transactions.length > 0 ? (
                         <FlatList data={transactions}
                         renderItem={({item}) => (
-                            <ExpenseItem title={item.title} price={item.price} id={item.id} category={item.category} currentDate={item.date}/>
+                            <ExpenseItem transactions={transactions} title={item.title} price={item.price} id={item.id} category={item.category} currentDate={item.date}/>
                             )}
                             keyExtractor={(item) => item.id.toString()}
                             showsVerticalScrollIndicator={false}

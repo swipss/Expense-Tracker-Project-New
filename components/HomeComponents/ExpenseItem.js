@@ -1,25 +1,25 @@
+import { arrayRemove, arrayUnion, deleteDoc, deleteField, doc, FieldValue, updateDoc } from 'firebase/firestore';
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { auth, db } from '../../firebase';
 
 export default function ExpenseItem(props) {
-    // const [currentDate, setCurrentDate] = useState('')
 
-    // useEffect(() => {
-    //     var date = new Date().getDate() // current date
-    //     var month = new Date().getMonth() + 1 // current month
-    //     var year = new Date().getFullYear() // current year
-    //     setCurrentDate(
-    //         date + '.' + month + '.' + year
-    //     )
-    // }, [])
-
+    const handleDelete = async() => {
+        const transactions = props.transactions
+        await updateDoc(doc(db, 'users', auth.currentUser.uid), {
+            transactions: transactions.filter(transaction => transaction.id !== props.id)
+        })
+    }
+    // console.log(props.transactions)
+    // console.log(props.id)
 
     
 
     return (
-        <View style={[styles.contentWrapper, styles.shadowProp]}>
+        <TouchableOpacity onPress={() => handleDelete()} style={[styles.contentWrapper, styles.shadowProp]}>
             <View style={styles.leftWrapper}>
                 <AntDesign name="close" size={18}
                 fillColor='lightgrey'
@@ -52,7 +52,7 @@ export default function ExpenseItem(props) {
                     color: props.price < 0 ? 'red' : 'green',
                 }}>{props.price > 0 ? `+$${props.price}` : `-$${Math.abs(props.price)}`}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
