@@ -1,37 +1,48 @@
-import { arrayRemove, arrayUnion, deleteDoc, deleteField, doc, FieldValue, updateDoc } from 'firebase/firestore';
-import React from 'react'
+import { arrayRemove, arrayUnion, deleteDoc, deleteField, doc, FieldValue, getDoc, updateDoc } from 'firebase/firestore';
+import React, { useState } from 'react'
+import { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { auth, db } from '../../firebase';
 
 export default function ExpenseItem(props) {
+    const [transactions, setTransactions] = useState([])
 
-    const handleDelete = async() => {
-        const transactions = props.transactions
-        await updateDoc(doc(db, 'users', auth.currentUser.uid), {
-            transactions: transactions.filter(transaction => transaction.id !== props.id)
-        })
-    }
+    useEffect(() => {
+        getDoc(doc(db, "users", auth.currentUser.uid)).then(docSnap => {
+            if (docSnap.exists()) {
+            setTransactions(docSnap.data().transactions)
+            } else {
+            console.log("No such document!");
+            }
+      })
+    }, [])
+
+    // const handleDelete = async() => {
+    //     updateDoc(doc(db, 'users', auth.currentUser.uid), {
+    //         transactions: transactions.filter(transaction => transaction.id != props.id)
+    //     })
+    // }
     // console.log(props.transactions)
     // console.log(props.id)
 
     
 
     return (
-        <TouchableOpacity onPress={() => handleDelete()} style={[styles.contentWrapper, styles.shadowProp]}>
+        <View style={[styles.contentWrapper, styles.shadowProp]}>
             <View style={styles.leftWrapper}>
-                <AntDesign name="close" size={18}
+                {/* <AntDesign name="close" size={18}
                 fillColor='lightgrey'
                 onPress={() => {
                     
                 }}
                 style={{marginRight: 5, opacity: 0.4}}
-                />
-                <View>
+                /> */}
+                <View style={{marginLeft: 5,}}>
                     <Text style={{
                         fontSize: 15,
-                        fontWeight: '600'
+                        fontWeight: 'bold'
                     }}>{props.title}</Text>
                     <Text style={{
                         fontSize: 13,
@@ -52,7 +63,7 @@ export default function ExpenseItem(props) {
                     color: props.price < 0 ? 'red' : 'green',
                 }}>{props.price > 0 ? `+$${props.price}` : `-$${Math.abs(props.price)}`}</Text>
             </View>
-        </TouchableOpacity>
+        </View>
     )
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import ExpenseItem from '../components/HomeComponents/ExpenseItem';
 import { useSelector, useDispatch } from 'react-redux';
@@ -30,13 +30,28 @@ export default function Home({ navigation }) {
        }
    }, [isFocused])
     // console.log(transactions)
+    // useEffect(() => {
+    //     getData()
+    // }, [])
+    // const getData = async() => {
+    //     getDoc(doc(db, 'users', auth.currentUser.uid)).then(docSnap => {
+    //         if(docSnap.exists()) {
+    //             setTransactions(docSnap.data().transactions)
+    //             setName(docSnap.data().firstName)
+    //             console.log(transactions)
+    //         } else {
+    //             console.log("No such document.")
+    //         }
+    //     })
+        
+    // }
+    
     
       
-
     return (
         <View style={{
             flex: 1,
-            backgroundColor: '#FAAD3D'
+            backgroundColor: Platform.OS === 'android' ? '#FAAD3D' : '#facb3d'
             }}>
             {/* <View style={{marginTop: 40,}}>
                 <Text style={{fontSize: 35, fontWeight: '300'}}>Hello,</Text>
@@ -45,7 +60,7 @@ export default function Home({ navigation }) {
             <Card navigation={navigation} data={transactions} name={name} />
             
             
-            <ScrollView showsHorizontalScrollIndicator={false} style={{backgroundColor: '#fff', borderTopLeftRadius: 50, borderTopRightRadius: 50, flex: 1}}>
+            <ScrollView style={{backgroundColor: '#fff', borderTopLeftRadius: 50, borderTopRightRadius: 50, flex: 1}}>
                 {
                     transactions.length > 0 ? (
                         <FlatList data={transactions}
@@ -55,6 +70,7 @@ export default function Home({ navigation }) {
                             keyExtractor={(item) => item.id.toString()}
                             showsVerticalScrollIndicator={false}
                             inverted
+                            
                             />
                             
                             ) : <NoTransactions />

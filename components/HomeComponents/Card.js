@@ -10,6 +10,7 @@ export default function Card({navigation, ...props}) {
     // const {transactions} = useSelector((state) => state.transactions);
     const isFocused = useIsFocused()
     const [data, setData] = useState([])
+    
 
     useEffect(() => {
         if (isFocused) {
@@ -24,6 +25,8 @@ export default function Card({navigation, ...props}) {
         }
    }, [isFocused])
 //    console.log('🤞', data)
+    
+//   console.log(transactions)
    
 
     const prices = data.map(transaction => transaction.price);
@@ -36,7 +39,7 @@ export default function Card({navigation, ...props}) {
         <LinearGradient colors={['#fad73d', '#facb3d', '#FAAD3D']} style={styles.box}>
                 <View style={{
                     alignItems: 'center',
-                    marginTop: 16,
+                    marginTop: 25,
                 }}>
                     <Text style={{
                         fontSize: 18,

@@ -41,9 +41,9 @@ export default function AddTransaction({navigation, modalVisible, setModalVisibl
     const [category, setCategory] = useState('Entertainment');
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
-    console.log(selectedValue)
-    console.log(category)
-    console.log(price)
+    // console.log(selectedValue)
+    // console.log(category)
+    // console.log(price)
 
     const [currentDate, setCurrentDate] = useState('')
 
